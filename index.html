@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarCrest Entertainment | Film Production</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CDN for the services layout snippet -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
             margin: 0;
@@ -17,6 +19,7 @@
             --primary-black: #0a0a0a;
             --secondary-black: #1a1a1a;
             --accent-gold: #d4af37;
+            --accent-orange: #ff6a3a;
             --light-gold: #f5e8c8;
             --text-light: #f5f5f5;
             --text-gray: #a0a0a0;
@@ -335,44 +338,147 @@
             font-size: 0.9rem;
         }
 
-        /* Services Section */
+        /* Services Section - film-themed, warm cards inspired by provided imagery */
+        .services-wrap {
+            background: linear-gradient(180deg, #3b2a20 0%, #1b120f 100%);
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle grain overlay to give a film/print texture */
+        .services-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 4px 4px;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            opacity: 0.9;
+        }
+
+        /* Boxed/staggered services layout inspired by the provided reference (central featured card) */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 22px;
+            max-width: 1100px;
             margin: 0 auto;
+            align-items: stretch;
+            position: relative;
         }
+
+    /* initial three-card layout: left, prominent center, right */
+    .services-grid > .service-card { grid-row: 1; }
+    .services-grid > .service-card.primary-left { grid-column: 1 / 2; }
+    .services-grid > .service-card.primary-center { grid-column: 2 / 3; }
+    .services-grid > .service-card.primary-right { grid-column: 3 / 4; }
 
         .service-card {
-            background-color: var(--secondary-black);
-            border-radius: 8px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 3px solid var(--accent-gold);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border-radius: 12px;
+            padding: 26px 22px;
+            text-align: left;
+            transition: transform .28s ease, box-shadow .28s ease;
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.55);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        /* make the large featured card taller and more prominent */
+        .service-card.feature {
+            padding: 32px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+            box-shadow: 0 18px 40px rgba(0,0,0,0.6);
         }
 
-        .service-icon {
-            font-size: 3rem;
-            color: var(--accent-gold);
-            margin-bottom: 20px;
+        .service-icon { /* smaller, aligned left */
+            font-size: 1.6rem;
+            color: var(--accent-orange);
+            background: rgba(0,0,0,0.18);
+            width: 54px;
+            height: 54px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-bottom: 14px;
         }
 
         .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
             color: var(--text-light);
         }
 
         .service-card p {
             color: var(--text-gray);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
+
+        .service-badge {
+            display: inline-block;
+            background: rgba(255,106,58,0.12);
+            color: var(--accent-orange);
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+        }
+
+        .service-cta {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 16px;
+            background: var(--accent-orange);
+            color: #fff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+        }
+
+        .service-cta:hover { transform: translateY(-3px); opacity: .95; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+
+        @media (max-width: 900px) {
+            .services-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+            .services-grid > .service-card { grid-column: auto; grid-row: auto; }
+            .service-card.feature { grid-column: auto; grid-row: auto; }
+        }
+
+        /* hidden expanded area for additional services */
+        .more-services {
+            display: none;
+            margin-top: 18px;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            gap: 18px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .more-services.active { display: grid; }
+
+        .view-services-btn {
+            display: inline-block;
+            margin: 26px auto 0;
+            padding: 10px 18px;
+            background: transparent;
+            color: var(--light-gold);
+            border: 2px solid rgba(245,232,200,0.12);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .view-services-btn:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
 
         /* Testimonials Section */
         .testimonials {
@@ -778,53 +884,115 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="section" id="services">
-        <div class="section-title">
-            <h2>Our Services</h2>
-        </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-film"></i>
+    <!-- Services Section (replaced with Tailwind layout) -->
+    <section id="services">
+        <!-- Inserted tailwind-based services block -->
+        <div class="min-h-screen bg-black flex items-center justify-center p-4">
+            <div class="relative w-full max-w-5xl bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-yellow-600/20">
+                <div class="absolute top-0 left-0 w-96 h-96 bg-yellow-600 rounded-full opacity-5 -translate-x-32 -translate-y-32"></div>
+                <div class="absolute bottom-0 left-0 w-80 h-80 bg-yellow-500 rounded-full opacity-5 -translate-x-20 translate-y-20"></div>
+                <div class="relative grid md:grid-cols-2 gap-8 p-8 md:p-12">
+                    <div class="flex flex-col justify-between">
+                        <div>
+                            <p class="text-yellow-500 text-sm uppercase tracking-wider mb-4">OUR SERVICES</p>
+                            <h1 class="text-white text-4xl md:text-5xl font-bold leading-tight mb-6">Premium Film Production Services for Your Vision</h1>
+                            <button class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-3 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-colors inline-flex items-center gap-2">VIEW ALL SERVICES <span>→</span></button>
+                        </div>
+                        <div class="mt-8 md:mt-0">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1579869847557-1f67382cc158?w=400&h=500&fit=crop" alt="Film Production" class="rounded-2xl w-64 h-80 object-cover border-2 border-yellow-600/30" />
+                            </div>
+                            <p class="text-gray-300 text-sm mt-6">Bringing Stories to Life with Cinematic Excellence and Creative Innovation</p>
+                        </div>
+                    </div>
+                    <div>
+                        <style>
+                            @keyframes fadeOut { 0% { opacity: 1; transform: scale(1) translateY(0); } 100% { opacity: 0; transform: scale(0.9) translateY(-20px); } }
+                            @keyframes fadeIn { 0% { opacity: 0; transform: scale(0.9) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+                            .fade-out { animation: fadeOut 0.4s ease-out forwards; }
+                            .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+                        </style>
+                        <div id="servicesGrid" class="grid grid-cols-2 gap-4 min-h-[600px]">
+                            <div class="service-card group-1 bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl">
+                                        <svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-xl mb-3">Film Production</h3>
+                                        <p class="text-gray-400 text-sm leading-relaxed">End-to-end film production services from concept development to final distribution.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card group-1 bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl"><svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-xl mb-3">Commercial Production</h3>
+                                        <p class="text-gray-400 text-sm leading-relaxed">Creating compelling commercial content that drives consumer engagement.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card group-1 bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl"><svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-xl mb-3">Post-Production</h3>
+                                        <p class="text-gray-400 text-sm leading-relaxed">Comprehensive editing, color grading, sound design, and visual effects.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card group-1 bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl"><svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-xl mb-3">Script Development</h3>
+                                        <p class="text-gray-400 text-sm leading-relaxed">Collaborative scriptwriting services to transform ideas into narratives.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-card group-2 hidden bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl"><svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg></div>
+                                <div>
+                                    <h3 class="text-white font-bold text-xl mb-3">Sound Design</h3>
+                                    <p class="text-gray-400 text-sm leading-relaxed">Immersive sound design and original score composition.</p>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="service-card group-2 hidden bg-gradient-to-br from-gray-800 to-gray-900 border-t-4 border-yellow-600 rounded-2xl p-6 shadow-lg hover:border-yellow-500 transition-all">
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-xl"><svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                <div>
+                                    <h3 class="text-white font-bold text-xl mb-3">Casting & Talent</h3>
+                                    <p class="text-gray-400 text-sm leading-relaxed">Professional casting services to find the perfect talent.</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button id="viewMoreBtn" onclick="toggleServices()" class="border-2 border-yellow-600 text-yellow-500 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-600 hover:text-black transition-all inline-flex items-center gap-2"><span id="btnText">VIEW MORE SERVICES</span><svg id="btnIcon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        </div>
+                    </div>
+                    <script>
+                        let currentGroup = 1;
+                        function toggleServices() {
+                            const btnText = document.getElementById('btnText');
+                            const btnIcon = document.getElementById('btnIcon');
+                            const currentCards = document.querySelectorAll(`.group-${currentGroup}`);
+                            const nextGroup = currentGroup === 1 ? 2 : 1;
+                            const nextCards = document.querySelectorAll(`.group-${nextGroup}`);
+                            currentCards.forEach((card, index) => { setTimeout(() => { card.classList.add('fade-out'); }, index * 100); });
+                            setTimeout(() => {
+                                currentCards.forEach(card => { card.classList.add('hidden'); card.classList.remove('fade-out'); });
+                                nextCards.forEach((card, index) => { card.classList.remove('hidden'); setTimeout(() => { card.classList.add('fade-in'); }, index * 100); });
+                                setTimeout(() => { nextCards.forEach(card => { card.classList.remove('fade-in'); }); }, 500 + (nextCards.length * 100));
+                            }, 400 + (currentCards.length * 100));
+                            currentGroup = nextGroup;
+                            if (currentGroup === 2) { btnText.textContent = 'VIEW PREVIOUS SERVICES'; btnIcon.style.transform = 'rotate(180deg)'; } else { btnText.textContent = 'VIEW MORE SERVICES'; btnIcon.style.transform = 'rotate(0deg)'; }
+                        }
+                    </script>
                 </div>
-                <h3>Film Production</h3>
-                <p>End-to-end film production services from concept development to final distribution, ensuring cinematic excellence at every stage.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-video"></i>
-                </div>
-                <h3>Commercial Production</h3>
-                <p>Creating compelling commercial content that effectively communicates brand messages and drives consumer engagement.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-photo-video"></i>
-                </div>
-                <h3>Post-Production</h3>
-                <p>Comprehensive post-production services including editing, color grading, sound design, and visual effects.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-pen-nib"></i>
-                </div>
-                <h3>Script Development</h3>
-                <p>Collaborative scriptwriting and development services to transform ideas into compelling narratives.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-music"></i>
-                </div>
-                <h3>Sound Design</h3>
-                <p>Immersive sound design and original score composition to enhance emotional impact and storytelling.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-theater-masks"></i>
-                </div>
-                <h3>Casting & Talent</h3>
-                <p>Professional casting services to find the perfect talent that brings characters and stories to life.</p>
             </div>
         </div>
     </section>
@@ -1025,6 +1193,8 @@
                 header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
             }
         });
+
+        
     </script>
 </body>
 </html>
